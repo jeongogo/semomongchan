@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>264318790633-bi9epb0dn24eslpok5cno5h9jhk9fu4r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.264318790633-bi9epb0dn24eslpok5cno5h9jhk9fu4r</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>264318790633-qdci70m5f4tq534e1su69jsvn8e5es9g.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAQKOifIJ4ECZgMmQqjfFv4b7olsFLmNns</string>
+	<key>GCM_SENDER_ID</key>
+	<string>264318790633</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.semomongchan</string>
+	<key>PROJECT_ID</key>
+	<string>semomongchan</string>
+	<key>STORAGE_BUCKET</key>
+	<string>semomongchan.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:264318790633:ios:af946774bf987f69f67978</string>
+</dict>
+</plist>
