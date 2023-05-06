@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useIsFocused } from "@react-navigation/native";
-import { getDoc } from '../../lib/doc';
+import { getDocs } from '../../lib/doc';
 import Home from '../../componetns/home/Home';
 
 function HomeScreen() {
@@ -8,7 +8,7 @@ function HomeScreen() {
   const [seminarList, setSeminarList] = useState([]);
 
   useEffect(() => {
-    getDoc('seminar').then(setSeminarList);
+    getDocs('seminar').then(setSeminarList);
   }, [isFocused]);
 
   return (

@@ -1,11 +1,21 @@
 import React from 'react';
+import { useWindowDimensions } from 'react-native';
+import RenderHtml from 'react-native-render-html';
 import { Text, View, StyleSheet } from 'react-native';
 
 function Detail({notice}) {
+  const { width } = useWindowDimensions();
+  const source = {
+    html: `${notice.content}`
+  };
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{notice.title}</Text>
-      <Text style={styles.content}>{notice.content}</Text>
+      <RenderHtml
+        contentWidth={width}
+        source={source}
+      />
     </View>
   )
 }

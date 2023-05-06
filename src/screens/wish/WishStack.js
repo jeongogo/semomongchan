@@ -1,29 +1,21 @@
 import React from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from './HomeScreen';
-import DetailScreen from './DetailScreen';
 
 const Stack = createNativeStackNavigator();
 
-function NoticeStack() {
+function WishStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name='NoticeHome'
+        name='WishHome'
         component={HomeScreen}
         options={{
-          title: '공지사항',
-        }}
-      />
-      <Stack.Screen
-        name='NoticeDetail'
-        component={DetailScreen}
-        options={{
-          title: '공지사항 상세',
+          title: '위시리스트',
         }}
       />
     </Stack.Navigator>
   );
 }
 
-export default NoticeStack;
+export default WishStack;

@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeStack from './home/HomeStack';
 import NoticeStack from './notice/NoticeStack';
+import WishStack from './wish/WishStack';
 import MyPageStack from './mypage/MyPageStack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -13,7 +14,7 @@ function MainTab() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: '#6200ee',
+        tabBarActiveTintColor: '#000',
       }}
     >
       <Tab.Screen
@@ -28,6 +29,13 @@ function MainTab() {
         component={NoticeStack}
         options={{
           tabBarIcon: ({color}) => <Icon name="article" size={24} color={color} />
+        }}
+      />
+      <Tab.Screen
+        name="WishStack"
+        component={WishStack}
+        options={{
+          tabBarIcon: ({color}) => <Icon name="favorite-outline" size={24} color={color} />
         }}
       />
       <Tab.Screen
