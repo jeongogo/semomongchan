@@ -1,7 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import CustomButton from '../common/CustomButton';
+import { ActivityIndicator, StyleSheet, View, Pressable, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import CustomButton from '../common/CustomButton';
 
 function SignButtons({isSignUp, onSubmit, loading}) {
   const navigation = useNavigation();
@@ -20,7 +20,7 @@ function SignButtons({isSignUp, onSubmit, loading}) {
   if (loading) {
     return (
       <View style={styles.spinnerWrapper}>
-        <ActivityIndicator size={32} color='#6200ee' />
+        <ActivityIndicator size={32} color='#ff4250' />
       </View>
     )
   }
@@ -37,20 +37,33 @@ function SignButtons({isSignUp, onSubmit, loading}) {
         theme='secondary'
         onPress={onSecondaryButtonPress}
       />
+      <Pressable style={styles.find} onPress={() => navigation.navigate('FindPassword')}>
+        <Text style={styles.findText}>비밀번호 찾기</Text>
+      </Pressable>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   spinnerWrapper: {
-    marginTop: 64,
+    marginTop: 32,
     height: 104,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttons: {
-    marginTop: 64,
+    marginTop: 32,
   },
+  find: {
+    marginTop: 16,
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
+  findText: {
+    fontSize: 14,
+    color: '#666',
+    textDecorationLine: 'underline',
+  }
 });
 
 export default SignButtons;

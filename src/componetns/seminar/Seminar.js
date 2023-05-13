@@ -4,14 +4,14 @@ import { Pressable, StyleSheet, Image, Text } from 'react-native';
 
 function Seminar({item}) {
   const navigation = useNavigation();
-  const [currentDate, setCurrentDate] = useState('');
+  // const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
-    const current = new Date(item.date.toDate());
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-    const date = current.getDate();
-    setCurrentDate(year + '년 ' + month + '월 ' + date + '일');
+    // const current = new Date(item.date.toDate());
+    // const year = current.getFullYear();
+    // const month = current.getMonth() + 1;
+    // const date = current.getDate();
+    // setCurrentDate(year + '년 ' + month + '월 ' + date + '일');
   }, []);
 
   return (
@@ -25,7 +25,7 @@ function Seminar({item}) {
         />
       }
       <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.date}>{currentDate}</Text>
+      <Text style={styles.host}>{item.host}</Text>
     </Pressable>
   )
 }
@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: '#222',
   },
-  date: {
-    marginTop: 3,
-    fontSize: 12,
+  host: {
+    marginTop: 5,
+    fontSize: 13,
     color: '#999',
   }
 })

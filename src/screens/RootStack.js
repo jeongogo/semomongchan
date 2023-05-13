@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './auth/SignInScreen';
 import WelcomeScreen from './auth/WelcomeScreen';
+import FindPasswordScreen from './auth/FindPasswordScreen';
 import useStore from '../store/store';
 import MainTab from './MainTab';
 import { subscribeAuth } from '../lib/auth';
-import { getUser } from '../lib/users';
+import { getUser } from '../lib/user';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,9 +24,8 @@ function RootStack() {
       if (!profile) {
         return;
       }
-      setUser(profile);
     });
-  }, [setUser]);
+  }, []);
 
   return (
     <Stack.Navigator>
@@ -44,6 +44,11 @@ function RootStack() {
               name='SignIn'
               component={SignInScreen}
               options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name='FindPassword'
+              component={FindPasswordScreen}
+              options={{title: ''}}
             />
             <Stack.Screen
               name='Welcome'

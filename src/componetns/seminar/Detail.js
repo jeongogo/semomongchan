@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import React from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image, Pressable, Alert } from 'react-native';
+import Toast from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import useStore from '../../store/store';
 import Comment from './Comment';
-import CommentWrite from './CommentWrite';
 
 function Detail({
+  toastRef,
   seminar,
   wishToggle,
   comments,
   handleWish,
-  handleSubmitComment
+  handleCommentWrite,
 }) {
-  const [visibleCommentWriteBtn, setVisibleCommentWriteBtn] = useState(true);  // 로그인 여부에 따라
+  const user = useStore((state) => state.user);
+
+  const onCommentView = () => {
+    Alert.alert("", "후기를 보려면 하나 이상의 후기를 남겨주세요.", [
+      {
+        text: "확인",
+        onPress: () => null,
+      },
+    ]);
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+        <Toast
+          ref={toastRef}
+          position='bottom'
+          positionValue={200}
+          fadeInDuration={400}
+          fadeOutDuration={1000}
+          style={{backgroundColor:'rgba(0, 0, 0, 0.7)'}}
+        />
         <Image
           source={{uri: seminar.posterUrl}}
           style={styles.image}
@@ -23,7 +42,10 @@ function Detail({
           resizeMode='cover'
         />
         <View style={styles.info}>
-          <Text style={styles.title}>{seminar.title}</Text>
+          <View>
+            <Text style={styles.title}>{seminar.title}</Text>
+            <Text style={styles.host}>{seminar.host}</Text>
+          </View>
           <View style={styles.wish}>
             <Pressable onPress={() => handleWish()}>
               {wishToggle
@@ -36,18 +58,21 @@ function Detail({
             <Text style={styles.count}>{seminar.wishCount}</Text>
           </View>
         </View>
-        <View style={styles.content}>
-          <Text>{seminar.content}</Text>
-        </View>
-        <View style={styles.comments}>
-          {comments &&
-            comments.map((item) => (
-              <Comment key={item.id} item={item} />
-            ))          
-          }
-        </View>
+        {user.isCommentWrite
+          ?
+            <View style={styles.comments}>
+              {comments &&
+                comments.map((item) => (
+                  <Comment key={item.id} item={item} handleCommentWrite={handleCommentWrite} />
+                ))          
+              }
+            </View>
+          :
+            <Pressable style={styles.commentViewBtn} onPress={onCommentView}>
+              <Text style={styles.commentViewBtnText}>댓글 보기</Text>
+            </Pressable>
+        }
       </ScrollView>
-      {visibleCommentWriteBtn && <CommentWrite handleSubmitComment={handleSubmitComment} />}
     </SafeAreaView>
   )
 }
@@ -72,6 +97,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: 500,
     color: '#222',
+  },
+  host: {
+    marginTop: 5,
+    fontSize: 14,
+    color: '#454545',
   },
   count: {
     fontSize: 12,
@@ -109,7 +139,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ededed',
     borderRadius: 7,
-  }
+  },
+  commentViewBtn: {
+    marginVertical: 20,
+    marginHorizontal: 15,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#ff4250',
+    borderRadius: 5,
+  },
+  commentViewBtnText: {
+    fontSize: 14,
+    color: '#ff4250',
+    textAlign: 'center',
+  },
 })
 
 export default Detail;

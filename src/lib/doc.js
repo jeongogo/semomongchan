@@ -11,9 +11,21 @@ export async function getDocs(collectionName) {
   return data;
 }
 
-export async function getDocsById(collectionName, id) {
-  const collection = firestore().collection(collectionName).where('docId', '==', id);
-  const snapshot = await collection.get();
+export async function getDocsBySearch(collectionName, key, text) {
+  const collection = firestore().collection(collectionName);
+  // const snapshot = await collection.orderBy("date", "desc").get();
+  const snapshot = await collection.where(key, 'array-contains', text).get();
+  const data = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  console.log(data);
+  return data;
+}
+
+export async function getDocsByKey(collectionName, key, value) {
+  const collection = firestore().collection(collectionName).where(key, '==', value);
+  const snapshot = await collection.orderBy('created', 'desc').get();
   const data = snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),

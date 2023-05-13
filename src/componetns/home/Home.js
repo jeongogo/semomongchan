@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList, StyleSheet, View, Text, Pressable } from 'react-native';
-import Seminar from './Seminar';
+import { FlatList, StyleSheet, View, Text, Pressable, ScrollView } from 'react-native';
+import Search from '../search/Search';
+import Seminar from '../seminar/Seminar';
 
 function Home({seminarList}) {
   const [active, setActive] = useState('all');
@@ -28,6 +29,7 @@ function Home({seminarList}) {
             <Text style={styles.tabText}>미용</Text>
           </Pressable>
         </View> */}
+        <Search home />
         <View style={styles.list}>
           <FlatList
             data={seminarList}
@@ -48,6 +50,7 @@ const renderItem = ({item}) => (
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingVertical: 20,
     backgroundColor: '#fff',
   },
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   list: {
+    marginTop: 15,
     paddingHorizontal: 15,
   },
   item: {

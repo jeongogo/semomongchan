@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import useStore from '../../store/store';
 import { signOut } from '../../lib/auth';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function Home({}) {
@@ -22,8 +22,13 @@ function Home({}) {
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
-        <View style={styles.avatar}></View>
-        <Text style={styles.name}>{user.displayName}</Text>
+        <View style={styles.avatar}>
+          <Image
+            style={styles.circle}
+            source={user.photoURL ? {uri: user.photoURL} : require('../assets/user.png')}
+          />
+        </View>
+        <Text style={styles.name}>{user.name}</Text>
         <Pressable onPress={onProfile}>
           <Icon name="navigate-next" size={24} color='#000' />
         </Pressable> 
@@ -58,8 +63,11 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#eee',
     overflow: 'hidden',
+  },
+  circle: {
+    width: 60,
+    height: 60,
   },
   name: {
     marginRight: 'auto',

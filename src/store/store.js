@@ -3,9 +3,11 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 let state = (set) => ({
-  /** 유저 */
   user: '',
   setUser: (data) => set(() => ({ user: data })),
+
+  email: '',
+  setEmail: (data) => set(() => ({ email: data })),
 
   seminar: '',
   setSeminar: (data) => set(() => ({ seminar: data })),

@@ -1,28 +1,80 @@
 import React, { useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { View,  StyleSheet} from 'react-native';
+import storage from '@react-native-firebase/storage';
+import { launchImageLibrary } from 'react-native-image-picker';
 import useStore from '../../store/store';
-import { createUser } from '../../lib/users';
+import { ActivityIndicator, View,  StyleSheet, Platform, Pressable, Image} from 'react-native';
+import { createUser } from '../../lib/user';
 import { signOut } from '../../lib/auth';
 import BorderedInput from '../common/BorderedInput';
 import CustomButton from '../common/CustomButton';
 
 function SetupProfile() {
-  const [displayName, setDisplayName] = useState('');
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [response, setResponse] = useState(null);
+  const email = useStore((state) => state.email);
   const setUser = useStore((state) => state.setUser);
 
   const {params} = useRoute();
   const {uid} = params || {};
 
-  const onSubmit = () => {
-    const user = {
-      id: uid,
-      displayName,
-      photoURL: null,
-    };
-    createUser(user);
-    setUser(user);
+  const onSelectImage = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        maxWidth: 512,
+        maxHeight: 512,
+        includeBase64: Platform.OS === 'android',
+      },
+      (res) => {
+        if (res.didCancel) {
+          return;
+        }
+        setResponse(res);
+      },
+    );
+  };
+
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      let photoURL = null;
+  
+      if (response) {
+        const asset = response.assets[0];
+        const extension = asset.fileName.split('.').pop();
+        const reference = storage().ref(`/profile/${uid}.${extension}`);
+  
+        if (Platform.OS === 'android') {
+          await reference.putString(asset.base64, 'base64', {
+            contentType: asset.type,
+          });
+        } else {
+          await reference.putFile(asset.uri);
+        }
+  
+        photoURL = response ? await reference.getDownloadURL() : null;
+      }
+  
+      const data = {
+        id: uid,
+        name,
+        phone,
+        email,
+        photoURL,
+        wishList: [],
+        isCommentWrite: false,
+      };
+      createUser(data);
+      setUser(data);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onCancel = () => {
@@ -32,19 +84,37 @@ function SetupProfile() {
 
   return (
     <View style={styles.block}>
-      <View style={styles.circle} />
+      <Pressable onPress={onSelectImage}>
+        <Image
+          style={styles.circle}
+          source={response ? {uri: response?.assets[0]?.uri} : require('../assets/user.png')}
+        />
+      </Pressable>
       <View style={styles.form}>
         <BorderedInput
-          placeholder='name'
-          value={displayName}
-          onChangeText={setDisplayName}
+          placeholder='이름'
+          value={name}
+          onChangeText={setName}
+          onSubmitEditing={onSubmit}
+          returnKeyType='next'
+          hasMarginBottom
+        />
+        <BorderedInput
+          placeholder='핸드폰 번호'
+          value={phone}
+          onChangeText={setPhone}
           onSubmitEditing={onSubmit}
           returnKeyType='next'
         />
-        <View style={styles.buttons}>
-          <CustomButton title='next' onPress={onSubmit} hasMarginBottom />
-          <CustomButton  title='cancel' onPress={onCancel} />
-        </View>
+        {loading
+          ?
+            <ActivityIndicator size={32} color='#ff4250' style={styles.spinner} />
+          :
+            <View style={styles.buttons}>
+              <CustomButton title='다음' onPress={onSubmit} hasMarginBottom />
+              <CustomButton  title='취소' onPress={onCancel} theme='secondary' />
+            </View>
+        }
       </View>
     </View>
   )
@@ -60,12 +130,18 @@ const styles = StyleSheet.create({
   circle: {
     backgroundColor: '#cdcdcd',
     borderRadius: 64,
-    width: 128,
-    height: 128,
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
   },
   form: {
     marginTop: 16,
     width: '100%',
+  },
+  spinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttons: {
     marginTop: 48,

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { getDoc, getDocsById, createDoc, updateDoc } from '../../lib/doc';
-import { updateUser } from '../../lib/users';
+import React, { useState, useEffect, useRef } from 'react';
+import { useIsFocused } from "@react-navigation/native";
+import { getDoc, getDocsByKey, createDoc, updateDoc } from '../../lib/doc';
+import { updateUser } from '../../lib/user';
 import useStore from '../../store/store';
 import Detail from '../../componetns/seminar/Detail';
 
 function DetailScreen({route}) {
+  const isFocused = useIsFocused();
   const [seminar, setSeminar] = useState('');
   const [comments, setComments] = useState([]);
   const [wishToggle, setWishToggle] = useState();
+  const toastRef = useRef();
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
@@ -24,7 +27,7 @@ function DetailScreen({route}) {
   /** 리뷰 가져오기 */
   const handleGetComments = async () => {
     try {
-      const data = await getDocsById('comment', route.params.id);
+      const data = await getDocsByKey('comment', 'seminarId', route.params.id);
       setComments(data);
     } catch (e) {
       console.log(e);
@@ -46,6 +49,7 @@ function DetailScreen({route}) {
           wishList: filterData.length < 1 ? [] : filterData
         });
         setUser({...user, wishList: filterData.length < 1 ? [] : filterData});
+        toastRef.current.show('위시리스트에서 제거되었습니다.');
       } else {
         const count = seminar.wishCount + 1;
         await updateDoc('seminar', route.params.id, {
@@ -59,7 +63,6 @@ function DetailScreen({route}) {
             title: seminar.title,
             content: seminar.content,
             posterUrl: seminar.posterUrl,
-            date: seminar.date,
             wishCount: count,
           }]
         });
@@ -70,26 +73,38 @@ function DetailScreen({route}) {
             title: seminar.title,
             content: seminar.content,
             posterUrl: seminar.posterUrl,
-            date: seminar.date,
             wishCount: count,
           }]
-        })
+        });
+        toastRef.current.show('위시리스트에 추가되었습니다.');
       }
     } catch (e) {
       console.log(e);
     }
   }
 
-  /** 댓글 작성하기 */
-  const handleSubmitComment = async (content) => {
+  const handleCommentWrite = async (id, content) => {
     try {
       const data = {
-        docId: route.params.id,
+        userId: user.id,
+        writer: user.name,
         content,
-        writer: user.displayName,
         created: new Date(),
+        likes: 0,
       }
-      await createDoc('comment', data);
+      const filterComments = comments.map((i) => {
+        if (i.id === id) {
+          return {
+            ...i,
+            recomments: i.recomments.concat(data)
+          };
+        }
+        return i;
+      });
+      setComments(filterComments);
+
+      const currentComments = comments.filter((i) => i.id === id);
+      await updateDoc('comment', id, {recomments: currentComments[0].recomments.concat(data)});
     } catch (e) {
       console.log(e);
     }
@@ -98,7 +113,7 @@ function DetailScreen({route}) {
   useEffect(() => {
     handleGetSeminar();
     handleGetComments();
-  }, []);
+  }, [isFocused]);
   
   useEffect(() => {
     const filterData = user.wishList.filter((i) => i.id === route.params.id);
@@ -107,13 +122,13 @@ function DetailScreen({route}) {
 
   return (
     <Detail
-      route={route}
+      toastRef={toastRef}
       seminar={seminar}
       comments={comments}
       wishToggle={wishToggle}
       setWishToggle={setWishToggle}
       handleWish={handleWish}
-      handleSubmitComment={handleSubmitComment}
+      handleCommentWrite={handleCommentWrite}
     />
   )
 }

@@ -5,7 +5,7 @@ import useStore from '../../store/store';
 import SignButtons from '../../componetns/auth/SignButtons';
 import SignInForm from '../../componetns/auth/SignInForm';
 import { signIn, signUp } from '../../lib/auth';
-import { getUser } from '../../lib/users';
+import { getUser } from '../../lib/user';
 
 function SignInScreen({route, navigation}) {
   const {isSignUp} = route.params ?? {};
@@ -16,6 +16,7 @@ function SignInScreen({route, navigation}) {
   });
   const [loading, setLoading] = useState();
   const setUser = useStore((state) => state.setUser);
+  const setEmail = useStore((state) => state.setEmail);
 
   const createChangeTextHandler = (name) => (value) => {
     setForm({...form, [name]: value});
@@ -37,6 +38,7 @@ function SignInScreen({route, navigation}) {
       const {user} = isSignUp ? await signUp(info) : await signIn(info);
       const profile = await getUser(user.uid);
       if (!profile) {
+        setEmail(user.email);
         navigation.navigate('Welcome', {uid: user.uid});
       } else {
         setUser(profile);
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   form: {
-    marginTop: 64,
+    marginTop: 34,
     width: '100%',
     paddingHorizontal: 16,
   },

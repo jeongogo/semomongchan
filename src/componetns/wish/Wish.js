@@ -4,16 +4,6 @@ import { StyleSheet, Text, Pressable, Image, View } from 'react-native';
 
 function Wish({item}) {
   const navigation = useNavigation();
-  const [currentDate, setCurrentDate] = useState('');
-
-
-  useEffect(() => {
-    const current = new Date(item.date.toDate());
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-    const date = current.getDate();
-    setCurrentDate(year + '년 ' + month + '월 ' + date + '일');
-  }, []);
 
   return (
     <Pressable style={styles.block} onPress={() => navigation.navigate('SeminarDetail', {id: item.id})}>
@@ -25,7 +15,6 @@ function Wish({item}) {
       />
       <View style={styles.content}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.date}>{currentDate}</Text>
         <Text style={styles.count}>관심도 {item.wishCount}</Text>
       </View>
     </Pressable>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Pressable, Text, Platform } from 'react-native';
 
-function CustomButton({onPress, title, hasMarginBottom, theme}) {
+function CustomButton({onPress, title, hasMarginBottom, theme, size}) {
   const isPrimary = theme === 'primary';
   return (
     <View style={[styles.block, hasMarginBottom && styles.margin]}>
@@ -11,6 +11,7 @@ function CustomButton({onPress, title, hasMarginBottom, theme}) {
           styles.wrapper,
           isPrimary && styles.primaryWrapper,
           Platform.OS === 'ios' && pressed && {opacity: 0.5},
+          size === 'small' && styles.small
         ]}
         android_ripple={{
           color: isPrimary ? '#ffffff' : '#6200ee',
@@ -39,15 +40,20 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ff4e50',
   },
   primaryWrapper: {
-    backgroundColor: '#6200ee',
+    backgroundColor: '#ff4e50',
   },
   primaryText: {
     color: 'white',
   },
   secondaryText: {
-    color: '#6200ee',
+    color: '#ff4e50',
+  },
+  small: {
+    height: 32,
   },
   text: {
     fontWeight: 'bold',
@@ -55,7 +61,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   margin: {
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });
 
