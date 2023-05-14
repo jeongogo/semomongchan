@@ -10,8 +10,8 @@ function Detail({
   seminar,
   wishToggle,
   comments,
-  handleWish,
-  handleCommentWrite,
+  wishMutation,
+  commentMutation,
 }) {
   const user = useStore((state) => state.user);
 
@@ -47,7 +47,7 @@ function Detail({
             <Text style={styles.host}>{seminar.host}</Text>
           </View>
           <View style={styles.wish}>
-            <Pressable onPress={() => handleWish()}>
+            <Pressable onPress={() => wishMutation.mutate()}>
               {wishToggle
                 ?
                   <Icon name="favorite" size={24} color='#ff4250' />
@@ -63,7 +63,7 @@ function Detail({
             <View style={styles.comments}>
               {comments &&
                 comments.map((item) => (
-                  <Comment key={item.id} item={item} handleCommentWrite={handleCommentWrite} />
+                  <Comment key={item.id} item={item} commentMutation={commentMutation} />
                 ))          
               }
             </View>

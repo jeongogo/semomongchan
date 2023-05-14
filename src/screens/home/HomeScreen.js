@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useIsFocused } from "@react-navigation/native";
+import React from 'react';
+import { useQuery } from 'react-query';
 import { getDocs } from '../../lib/doc';
 import Home from '../../componetns/home/Home';
+import Loader from '../../componetns/common/Loader';
 
 function HomeScreen() {
-  const isFocused = useIsFocused();
-  const [seminarList, setSeminarList] = useState([]);
+  const getSeminarList = () => {
+    return getDocs('seminar');
+  }
 
-  useEffect(() => {
-    getDocs('seminar').then(setSeminarList);
-  }, [isFocused]);
+  const {data} = useQuery('seminar', getSeminarList);
+
+  if (!data) {
+    return <Loader />
+  }
 
   return (
-    <Home seminarList={seminarList} />
+    <Home seminarList={data} />
   );
 }
 

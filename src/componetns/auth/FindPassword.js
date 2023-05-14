@@ -26,7 +26,7 @@ function FindPassword({handleResetPassword}) {
           onSubmitEditing={onSubmit}
         />
         <CustomButton
-          title='비밀번호 재설정'
+          title='인증 메일 보내기'
           onPress={onSubmit}
         />
       </SafeAreaView>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    marginBottom: 32,
+    marginBottom: 16,
     fontSize: 24,
     fontWeight: 700,
     color: '#222',

@@ -49,8 +49,12 @@ function Comment({handleSubmitComment}) {
 
       const data = {
         seminarId: route.params.id,
-        userId: user.id,
-        writer: user.name,
+        writer: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          photoURL: user.photoURL,
+        },
         content,
         recomments: [],
         created: new Date(),
@@ -66,22 +70,24 @@ function Comment({handleSubmitComment}) {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={onSelectImage}>
-        <Text>이미지 등록</Text>
-      </Pressable>
-      {response &&
-        <Image
-          style={styles.image}
-          source={{uri: response?.assets[0]?.uri}}
-        />
-      }
       <TextInput
         multiline={true}
         numberOfLines={4}
         style={styles.input}
         value={content}
         onChangeText={setContent}
-      />
+        />
+      {response
+        ?
+          <Image
+            style={styles.image}
+            source={{uri: response?.assets[0]?.uri}}
+          />
+        :
+          <Pressable style={styles.addPhoto} onPress={onSelectImage}>
+            <Text style={styles.addPhotoText}>사진 추가하기</Text>
+          </Pressable>
+      }
       <Pressable onPress={onSubmit} style={styles.btn}>
         <Text style={styles.btnText}>전송</Text>
       </Pressable>
@@ -96,7 +102,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: '#fff',
   },
+  addPhoto: {
+    marginTop: 10,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  addPhotoText: {
+    fontSize: 15,
+    color: '#222',
+    textAlign: 'center',
+  },
   image: {
+    marginTop: 10,
     width: 100,
     height: 100,
     resizeMode: 'cover',

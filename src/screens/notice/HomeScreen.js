@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useIsFocused } from "@react-navigation/native";
+import React from 'react';
+import { useQuery } from 'react-query';
 import { getDocs } from '../../lib/doc';
 import Home from '../../componetns/notice/Home';
+import Loader from '../../componetns/common/Loader';
 
 function HomeScreen() {
-  const isFocused = useIsFocused();
-  const [noticeList, setNoticeList] = useState([]);
+  const getNoticeList = () => {
+    return getDocs('notice');
+  }
 
-  useEffect(() => {
-    getDocs('notice').then(setNoticeList);
-  }, [isFocused]);
+  const {data} = useQuery('notice', getNoticeList);
 
+  if (!data) {
+    return <Loader />
+  }
+  
   return (
-    <Home noticeList={noticeList} />
+    <Home noticeList={data} />
   );
 }
 

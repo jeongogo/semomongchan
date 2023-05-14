@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   list: {
-    marginTop: 15,
+    marginTop: 20,
     paddingHorizontal: 15,
   },
   item: {

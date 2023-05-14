@@ -19,7 +19,7 @@ function MypageStack() {
         name='MyProfile'
         component={ProfileScreen}
         options={{
-          title: '프로필',
+          title: '프로필 수정',
         }}
       />
     </Stack.Navigator>

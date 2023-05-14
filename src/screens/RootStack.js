@@ -5,6 +5,7 @@ import WelcomeScreen from './auth/WelcomeScreen';
 import FindPasswordScreen from './auth/FindPasswordScreen';
 import useStore from '../store/store';
 import MainTab from './MainTab';
+import PhotoScreen from './seminar/PhotoScreen';
 import { subscribeAuth } from '../lib/auth';
 import { getUser } from '../lib/user';
 
@@ -35,6 +36,11 @@ function RootStack() {
             <Stack.Screen
               name='MainTab'
               component={MainTab}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name='Photo'
+              component={PhotoScreen}
               options={{headerShown: false}}
             />
           </>

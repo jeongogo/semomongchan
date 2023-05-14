@@ -21,6 +21,8 @@ const renderItem = ({item}) => (
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#ededed'
   },
 })
 

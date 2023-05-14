@@ -61,9 +61,10 @@ function SignInScreen({route, navigation}) {
   return (
     <KeyboardAvoidingView
       style={styles.keyboardAvoidingView}
-      behavior={Platform.select({ios: 'padding'})}>
+      behavior={Platform.select({ios: 'padding'})}
+    >
       <SafeAreaView style={styles.fullscreen}>
-        <Text style={styles.text}>SEMO</Text>
+        <Text style={styles.text}>세모</Text>
         <View style={styles.form}>
           <SignInForm
             isSignUp={isSignUp}
@@ -85,6 +86,7 @@ function SignInScreen({route, navigation}) {
 const styles = StyleSheet.create({
   keyboardAvoidingView: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   fullscreen: {
     flex: 1,
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
   form: {
     marginTop: 34,
     width: '100%',
-    paddingHorizontal: 16,
+    paddingHorizontal: 48,
   },
 });
 

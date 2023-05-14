@@ -1,24 +1,39 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TextInput, View, Pressable } from 'react-native';
 
-function Comment({item, handleCommentWrite}) {
+function Comment({item, commentMutation}) {
+  const navigation = useNavigation();
   const [content, setContent] = useState('');
+
+  const getDate = (currentDate) => {
+    const current = new Date(currentDate.toDate());
+    const year = current.getFullYear();
+    const month = current.getMonth() + 1;
+    const date = current.getDate();
+    return year + '. ' + month + '. ' + date
+  }
 
   const onWrite = (id) => {
     setContent('');
-    handleCommentWrite(id, content);
+    commentMutation.mutate({id, content});
   }
   
   return (
     <View style={styles.container}>
       <View style={styles.comment}>
         <View style={styles.avatar}>
-          
+          <Image style={styles.avatarImage} source={item.writer.photoURL ? {uri: item.writer.photoURL} : require('../assets/user.png')} />
         </View>
         <View style={styles.contentWrap}>
-          <Text style={styles.writer}>{item.writer}</Text>
+          <View style={styles.wrap}>
+            <Text style={styles.writer}>{item.writer.name}</Text>
+            <Text style={styles.date}>{getDate(item.created)}</Text>
+          </View>
           {item.photoURL &&
-            <Image style={styles.image} source={{uri: item.photoURL}} />
+            <Pressable onPress={() => navigation.navigate('Photo', {url: item.photoURL})}>
+              <Image style={styles.image} source={{uri: item.photoURL}} />
+            </Pressable>
           }
           <View style={styles.content}>
             <Text style={styles.contentText}>{item.content}</Text>
@@ -28,9 +43,14 @@ function Comment({item, handleCommentWrite}) {
       {item.recomments.length > 0 &&
         item.recomments.map((i) => (
           <View key={i.created} style={[styles.comment, styles.recomment]}>
-            <View style={styles.avatar}></View>
+            <View style={styles.avatar}>
+              <Image style={styles.avatarImage} source={i.writer.photoURL ? {uri: i.writer.photoURL} : require('../assets/user.png')} />
+            </View>
             <View style={styles.contentWrap}>
-              <Text style={styles.writer}>{i.writer}</Text>
+              <View style={styles.wrap}>
+                <Text style={styles.writer}>{i.writer.name}</Text>
+                <Text style={styles.date}>{getDate(i.created)}</Text>
+              </View>
               <Text style={styles.content}>{i.content}</Text>
             </View>
           </View>
@@ -56,25 +76,37 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   avatar: {
+    marginRight: 10,
+  },
+  avatarImage: {
     width: 40,
     height: 40,
-    marginRight: 10,
-    backgroundColor: '#ddd',
+    resizeMode: 'cover',
     borderRadius: 20,
-  },
-  writer: {
-    marginBottom: 10,
-    fontSize: 14,
-    color: '#222',
   },
   contentWrap: {
     padding: 15,
     backgroundColor: '#f6f6f6',
     borderRadius: 5,
   },
+  wrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  writer: {
+    marginRight: 10,
+    fontSize: 14,
+    color: '#222',
+  },
+  date: {
+    fontSize: 12,
+    color: '#999',
+  },
   image: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     marginBottom: 10,
   },
   content: {
@@ -85,8 +117,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 40,
-    marginTop: 10,
+    paddingLeft: 50,
+    marginTop: 15,
   },
   writeInput: {
     height: 40,
@@ -112,7 +144,7 @@ const styles = StyleSheet.create({
   },
   recomment: {
     paddingLeft: 50,
-    marginTop: 10,
+    marginTop: 15,
   },
 });
 

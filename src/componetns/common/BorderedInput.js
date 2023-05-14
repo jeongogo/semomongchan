@@ -7,17 +7,20 @@ function BorderedInput({hasMarginBottom, ...rest}, ref) {
       style={[styles.input, hasMarginBottom && styles.margin]}
       ref={ref}
       {...rest}
+      placeholderTextColor='#aaa'
     />
   )
 }
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: '#bdbdbd',
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    borderRadius: 4,
     height: 48,
+    paddingHorizontal: 16,
+    fontSize: 15,
+    color: '#222',
+    borderWidth: 1,
+    borderColor: '#aaa',
+    borderRadius: 4,
     backgroundColor: 'white'
   },
   margin: {
