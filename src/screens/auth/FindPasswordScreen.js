@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import auth from '@react-native-firebase/auth';
-import FindPassword from '../../componetns/auth/FindPassword';
+import FindPassword from '../../components/auth/FindPassword';
 import { Alert } from 'react-native';
 
 function FindPasswordScreen() {

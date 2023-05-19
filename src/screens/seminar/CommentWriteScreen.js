@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import useStore from '../../store/store';
 import { createDoc } from '../../lib/doc';
 import { updateUser } from '../../lib/user';
-import CommentWrite from '../../componetns/seminar/CommentWrite';
+import CommentWrite from '../../components/seminar/CommentWrite';
 
 function CommentScreen() {  
   const route = useRoute();

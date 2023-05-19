@@ -7,7 +7,7 @@ function Notice({item}) {
   const [currentDate, setCurrentDate] = useState('');
 
   useEffect(() => {
-    const current = new Date(item.created.toDate());
+    const current = new Date(item._data.created.toDate());
     const year = current.getFullYear();
     const month = current.getMonth() + 1;
     const date = current.getDate();
@@ -17,7 +17,7 @@ function Notice({item}) {
   return (
     <Pressable onPress={() => navigation.navigate('NoticeDetail', {id: item.id})} style={styles.block}>
       <Text style={styles.date}>{currentDate}</Text>
-      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.title}>{item._data.title}</Text>
     </Pressable>
   )
 }
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ededed'
   },
   title: {
-    marginTop: 3,
+    marginTop: 5,
     fontSize: 14,
     fontWeight: 500,
     color: '#222',

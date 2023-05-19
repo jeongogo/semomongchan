@@ -3,8 +3,8 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { getDoc, getDocsByKey, updateDoc } from '../../lib/doc';
 import { updateUser } from '../../lib/user';
 import useStore from '../../store/store';
-import Detail from '../../componetns/seminar/Detail';
-import Loader from '../../componetns/common/Loader';
+import Detail from '../../components/seminar/Detail';
+import Loader from '../../components/common/Loader';
 
 function DetailScreen({route}) {
   const queryClient = useQueryClient();

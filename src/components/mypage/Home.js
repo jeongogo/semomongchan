@@ -21,7 +21,7 @@ function Home({}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.profile}>
+      <Pressable  style={styles.profile} onPress={onProfile}>
         <View style={styles.avatar}>
           <Image
             style={styles.circle}
@@ -29,10 +29,8 @@ function Home({}) {
           />
         </View>
         <Text style={styles.name}>{user.name}</Text>
-        <Pressable onPress={onProfile}>
-          <Icon name="navigate-next" size={24} color='#000' />
-        </Pressable> 
-      </View>
+        <Icon name="navigate-next" size={24} color='#000' />
+      </Pressable> 
       <View style={styles.snb}>
         <Pressable onPress={onLogout}>
           <Text style={styles.logout}>로그아웃</Text>

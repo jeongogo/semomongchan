@@ -1,22 +1,53 @@
 import React from 'react';
-import { useQuery } from 'react-query';
-import { getDocs } from '../../lib/doc';
-import Home from '../../componetns/home/Home';
-import Loader from '../../componetns/common/Loader';
+import firestore from '@react-native-firebase/firestore';
+import { useInfiniteQuery } from 'react-query';
+import Home from '../../components/home/Home';
+import Loader from '../../components/common/Loader';
+import { Button} from 'react-native';
 
 function HomeScreen() {
-  const getSeminarList = () => {
-    return getDocs('seminar');
+  const seminarQuery = useInfiniteQuery(
+    ["seminar"],
+    async ({queryKey, pageParam}) => {
+      return pageParam
+        ?
+          await firestore()
+          .collection("seminar")
+          .orderBy("created", "desc")
+          .startAfter(pageParam)
+          .limit(10)
+          .get()
+          .then((querySnapshot) => querySnapshot)
+        :
+          await firestore()
+          .collection("seminar")
+          .orderBy("created", "desc") 
+          .limit(10)
+          .get()
+          .then((querySnapshot) => querySnapshot)
+    }, 
+    {
+      getNextPageParam: (querySnapshot) => {
+        if (querySnapshot.size < 10) return null;
+        else return querySnapshot.docs[querySnapshot.docs.length - 1];
+      },
+    }
+  );
+
+  const onMore = () => {
+    if (seminarQuery.hasNextPage) {
+      seminarQuery.fetchNextPage();
+    } else {
+      console.log("no next page");
+    }
   }
 
-  const {data} = useQuery('seminar', getSeminarList);
-
-  if (!data) {
+  if (!seminarQuery.data) {
     return <Loader />
   }
 
   return (
-    <Home seminarList={data} />
+    <Home data={seminarQuery.data} onMore={onMore} />
   );
 }
 

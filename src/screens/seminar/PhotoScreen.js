@@ -1,5 +1,5 @@
 import React from 'react';
-import Photo from '../../componetns/seminar/Photo';
+import Photo from '../../components/seminar/Photo';
 
 function PhotoScreen() {
   return (

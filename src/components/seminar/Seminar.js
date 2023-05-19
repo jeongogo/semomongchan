@@ -16,16 +16,16 @@ function Seminar({item}) {
 
   return (
     <Pressable onPress={() => navigation.navigate('SeminarDetail', {id: item.id})} style={styles.block}>
-      {item.posterUrl &&
+      {item._data.posterUrl &&
         <Image
-          source={{uri: item.posterUrl}}
+          source={{uri: item._data.posterUrl}}
           style={styles.image}
           resizeMethod='resize'
           resizeMode='cover'
         />
       }
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.host}>{item.host}</Text>
+      <Text style={styles.title}>{item._data.title}</Text>
+      <Text style={styles.host}>{item._data.host}</Text>
     </Pressable>
   )
 }

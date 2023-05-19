@@ -1,4 +1,4 @@
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
@@ -16,12 +16,12 @@ let state = (set) => ({
   setNotice: (data) => set(() => ({ notice: data })),
 });
 
-//const useStore = create(persist(state, {
-//    name: "semo-storage",
-//    storage: createJSONStorage(() => AsyncStorage),
-//  }
-//));
+const useStore = create(persist(state, {
+   name: "semo-storage",
+   storage: createJSONStorage(() => AsyncStorage),
+ }
+));
 
-const useStore = create(state);
+// const useStore = create(state);
 
 export default useStore;

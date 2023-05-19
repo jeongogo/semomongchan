@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { getDocsBySearch } from '../../lib/doc';
-import Result from '../../componetns/search/Result';
+import Result from '../../components/search/Result';
 
 function SearchScreen({route}) {
   const [seminarList, setSeminarList] = useState([]);

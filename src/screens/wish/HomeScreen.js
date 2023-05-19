@@ -1,5 +1,5 @@
 import React from 'react';
-import Home from '../../componetns/wish/Home';
+import Home from '../../components/wish/Home';
 
 function HomeScreen() {
   return (

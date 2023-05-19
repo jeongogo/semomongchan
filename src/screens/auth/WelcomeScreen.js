@@ -1,7 +1,7 @@
 import React from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SetupProfile from '../../componetns/auth/SetupProfile';
+import SetupProfile from '../../components/auth/SetupProfile';
 
 function WelcomeScreen() {
   return (

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useStore from '../../store/store';
-import SignButtons from '../../componetns/auth/SignButtons';
-import SignInForm from '../../componetns/auth/SignInForm';
+import SignButtons from '../../components/auth/SignButtons';
+import SignInForm from '../../components/auth/SignInForm';
 import { signIn, signUp } from '../../lib/auth';
 import { getUser } from '../../lib/user';
 

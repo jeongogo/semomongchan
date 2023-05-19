@@ -1,22 +1,52 @@
 import React from 'react';
-import { useQuery } from 'react-query';
-import { getDocs } from '../../lib/doc';
-import Home from '../../componetns/notice/Home';
-import Loader from '../../componetns/common/Loader';
+import firestore from '@react-native-firebase/firestore';
+import { useInfiniteQuery } from 'react-query';
+import Home from '../../components/notice/Home';
+import Loader from '../../components/common/Loader';
 
 function HomeScreen() {
-  const getNoticeList = () => {
-    return getDocs('notice');
+  const noticeQuery = useInfiniteQuery(
+    ["notice"],
+    async ({queryKey, pageParam}) => {
+      return pageParam
+        ?
+          await firestore()
+          .collection("notice")
+          .orderBy("created", "desc")
+          .startAfter(pageParam)
+          .limit(10)
+          .get()
+          .then((querySnapshot) => querySnapshot)
+        :
+          await firestore()
+          .collection("notice")
+          .orderBy("created", "desc") 
+          .limit(10)
+          .get()
+          .then((querySnapshot) => querySnapshot)
+    }, 
+    {
+      getNextPageParam: (querySnapshot) => {
+        if (querySnapshot.size < 10) return null;
+        else return querySnapshot.docs[querySnapshot.docs.length - 1];
+      },
+    }
+  );
+
+  const onMore = () => {
+    if (noticeQuery.hasNextPage) {
+      noticeQuery.fetchNextPage();
+    } else {
+      console.log("no next page");
+    }
   }
 
-  const {data} = useQuery('notice', getNoticeList);
-
-  if (!data) {
+  if (!noticeQuery.data) {
     return <Loader />
   }
   
   return (
-    <Home noticeList={data} />
+    <Home data={noticeQuery.data} onMore={onMore} />
   );
 }
 

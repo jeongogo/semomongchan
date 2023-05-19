@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import firestore from '@react-native-firebase/firestore';
-import Detail from '../../componetns/notice/Detail';
+import Detail from '../../components/notice/Detail';
 
 function DetailScreen({route}) {
   const [notice, setNotice] = useState('');

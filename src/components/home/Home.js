@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList, StyleSheet, View, Text, Pressable, ScrollView } from 'react-native';
 import Search from '../search/Search';
 import Seminar from '../seminar/Seminar';
 
-function Home({seminarList}) {
+function Home({data, onMore}) {
   const [active, setActive] = useState('all');
+  const [list, setList] = useState([]);
 
   const onTab = (tab) => {
     console.log('tab');
     setActive(tab);
   }
+
+  useEffect(() => {
+    let filterData = [];
+    data.pages.map((i) => {
+      filterData.push(i._docs);
+      return i._docs
+    });
+    setList(filterData[0]);
+  }, []);
 
   return (
     <SafeAreaProvider style={styles.container}>
@@ -32,11 +42,12 @@ function Home({seminarList}) {
         <Search home />
         <View style={styles.list}>
           <FlatList
-            data={seminarList}
+            data={list}
             numColumns={2}
             columnWrapperStyle={{justifyContent: 'space-between'}}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
+            onEndReached={onMore}
           />
         </View>
       </SafeAreaView>
