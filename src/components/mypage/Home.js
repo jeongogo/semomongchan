@@ -10,10 +10,6 @@ function Home({}) {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
 
-  const onProfile = () => {
-    navigation.navigate('MyProfile');
-  }
-
   const onLogout = () => {
     signOut();
     setUser('');
@@ -21,7 +17,7 @@ function Home({}) {
 
   return (
     <View style={styles.container}>
-      <Pressable  style={styles.profile} onPress={onProfile}>
+      <Pressable  style={styles.profile} onPress={() => navigation.navigate('MyProfile')}>
         <View style={styles.avatar}>
           <Image
             style={styles.circle}
@@ -31,11 +27,20 @@ function Home({}) {
         <Text style={styles.name}>{user.name}</Text>
         <Icon name="navigate-next" size={24} color='#000' />
       </Pressable> 
-      <View style={styles.snb}>
-        <Pressable onPress={onLogout}>
-          <Text style={styles.logout}>로그아웃</Text>
+      <View style={styles.hr}></View>
+      <View style={styles.menuWrap}>
+        <Pressable style={styles.menu} onPress={() => navigation.navigate('ApplyWrite')}>
+          <Text style={styles.menuText}>세미나 등록 신청하기</Text>
+          <Icon name="navigate-next" size={24} color='#000' />
+        </Pressable>
+        <Pressable style={styles.menu} onPress={() => navigation.navigate('ApplyList')}>
+          <Text style={styles.menuText}>세미나 등록 신청 내역</Text>
+          <Icon name="navigate-next" size={24} color='#000' />
         </Pressable>
       </View>
+      <Pressable onPress={onLogout} style={styles.logout}>
+        <Text style={styles.logoutText}>로그아웃</Text>
+      </Pressable>
     </View>
   )
 }
@@ -44,7 +49,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 20,
-    paddingHorizontal: 15,
     backgroundColor: '#fff',
   },
   profile: {
@@ -52,6 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 15,
     paddingBottom: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#ededed',
@@ -67,17 +72,39 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
+  hr: {
+    borderBottomWidth: 7,
+    borderBottomColor: '#ededed',
+  },
   name: {
     marginRight: 'auto',
-    fontSize: 14,
+    fontSize: 15,
     color: '#222',
   },
-  snb: {
-    paddingVertical: 20,
+  menuWrap: {
+    paddingVertical: 10,
+  },
+  menu: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ededed',
+  },
+  menuText: {
+    fontSize: 15,
+    color: '#222',
   },
   logout: {
+    marginTop: 10,
+    paddingHorizontal: 15,
+  },
+  logoutText: {
     fontSize: 14,
-    color: '#222',
+    color: '#666',
     textDecorationLine: 'underline',
   }
 })

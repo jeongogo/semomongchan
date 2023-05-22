@@ -64,7 +64,7 @@ function SignInScreen({route, navigation}) {
       behavior={Platform.select({ios: 'padding'})}
     >
       <SafeAreaView style={styles.fullscreen}>
-        <Text style={styles.text}>세모</Text>
+        <Text style={styles.text}>세미나유</Text>
         <View style={styles.form}>
           <SignInForm
             isSignUp={isSignUp}

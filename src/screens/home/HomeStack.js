@@ -4,7 +4,7 @@ import { Pressable } from 'react-native';
 import HomeScreen from './HomeScreen';
 import SearchScreen from '../search/SearchScreen';
 import SeminarDetailScreen from '../seminar/DetailScreen';
-import SeminarCommentWriteScreen from '../seminar/CommentWriteScreen';
+import SeminarReviewWriteScreen from '../seminar/ReviewWriteScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createNativeStackNavigator();
@@ -28,15 +28,15 @@ function HomeStack({navigation}) {
         options={({route}) => ({
           title: '',
           headerRight: () => (
-            <Pressable onPress={() => navigation.navigate('SeminarCommentWrite', {id: route.params.id})}>
+            <Pressable onPress={() => navigation.navigate('SeminarReviewWrite', {id: route.params.id})}>
               <Icon name="create" size={24} color={'#000'} />
             </Pressable>
           )
         })}
       />
       <Stack.Screen
-        name='SeminarCommentWrite'
-        component={SeminarCommentWriteScreen}
+        name='SeminarReviewWrite'
+        component={SeminarReviewWriteScreen}
         options={{title: '리뷰 작성하기'}}
       />
     </Stack.Navigator>

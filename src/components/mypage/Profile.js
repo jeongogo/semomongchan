@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btn: {
-    marginTop: 32,
+    marginTop: 16,
   }
 })
 

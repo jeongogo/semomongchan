@@ -1,17 +1,20 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image, Pressable, Alert } from 'react-native';
+import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View, Image, Pressable, Alert } from 'react-native';
 import Toast from 'react-native-easy-toast';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import useStore from '../../store/store';
-import Comment from './Comment';
+import Review from './Review';
 
 function Detail({
   toastRef,
   seminar,
   wishToggle,
-  comments,
+  reviews,
   wishMutation,
   commentMutation,
+  handleDeleteReview,
+  handleUpdateComment,
+  handleDeleteComment,
 }) {
   const user = useStore((state) => state.user);
 
@@ -25,55 +28,64 @@ function Detail({
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Toast
-          ref={toastRef}
-          position='bottom'
-          positionValue={200}
-          fadeInDuration={400}
-          fadeOutDuration={1000}
-          style={{backgroundColor:'rgba(0, 0, 0, 0.7)'}}
-        />
-        <Image
-          source={{uri: seminar.posterUrl}}
-          style={styles.image}
-          resizeMethod='resize'
-          resizeMode='cover'
-        />
-        <View style={styles.info}>
-          <View>
-            <Text style={styles.title}>{seminar.title}</Text>
-            <Text style={styles.host}>{seminar.host}</Text>
-          </View>
-          <View style={styles.wish}>
-            <Pressable onPress={() => wishMutation.mutate()}>
-              {wishToggle
-                ?
-                  <Icon name="favorite" size={24} color='#ff4250' />
-                :
-                  <Icon name="favorite-outline" size={24} color='#ddd' />
-              }
-            </Pressable>
-            <Text style={styles.count}>{seminar.wishCount}</Text>
-          </View>
-        </View>
-        {user.isCommentWrite
-          ?
-            <View style={styles.comments}>
-              {comments &&
-                comments.map((item) => (
-                  <Comment key={item.id} item={item} commentMutation={commentMutation} />
-                ))          
-              }
+    <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.select({ios: 'padding'})}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView>
+          <Toast
+            ref={toastRef}
+            position='bottom'
+            positionValue={200}
+            fadeInDuration={400}
+            fadeOutDuration={1000}
+            style={{backgroundColor:'rgba(0, 0, 0, 0.7)'}}
+          />
+          <Image
+            source={{uri: seminar.posterUrl}}
+            style={styles.image}
+            resizeMethod='resize'
+            resizeMode='cover'
+          />
+          <View style={styles.info}>
+            <View>
+              <Text style={styles.title}>{seminar.title}</Text>
+              <Text style={styles.host}>{seminar.host}</Text>
             </View>
-          :
-            <Pressable style={styles.commentViewBtn} onPress={onCommentView}>
-              <Text style={styles.commentViewBtnText}>댓글 보기</Text>
-            </Pressable>
-        }
-      </ScrollView>
-    </SafeAreaView>
+            <View style={styles.wish}>
+              <Pressable onPress={() => wishMutation.mutate()}>
+                {wishToggle
+                  ?
+                    <Icon name="favorite" size={24} color='#ff4250' />
+                  :
+                    <Icon name="favorite-outline" size={24} color='#ddd' />
+                }
+              </Pressable>
+              <Text style={styles.count}>{seminar.wishCount}</Text>
+            </View>
+          </View>
+          {user.isCommentWrite
+            ?
+              <View style={styles.reviews}>
+                {reviews &&
+                  reviews.map((item) => (
+                    <Review
+                      key={item.id}
+                      item={item}
+                      commentMutation={commentMutation}
+                      handleDeleteReview={handleDeleteReview}
+                      handleUpdateComment={handleUpdateComment}
+                      handleDeleteComment={handleDeleteComment}
+                    />
+                  ))          
+                }
+              </View>
+            :
+              <Pressable style={styles.commentViewBtn} onPress={onCommentView}>
+                <Text style={styles.commentViewBtnText}>댓글 보기</Text>
+              </Pressable>
+          }
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -118,10 +130,8 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     marginBottom: 16,
   },
-  comments: {
+  reviews: {
     marginTop: 20,
-    paddingHorizontal: 15,
-    paddingBottom: 50,
   },
   btns: {
     display: 'flex',

@@ -1,151 +1,147 @@
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Image, StyleSheet, Text, TextInput, View, Pressable } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, View, Pressable, Alert } from 'react-native';
+import useStore from '../../store/store';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-function Comment({item, commentMutation}) {
-  const navigation = useNavigation();
-  const [content, setContent] = useState('');
+function Recomment({id, item, getDate, handleUpdateComment, handleDeleteComment}) {
+  const user = useStore((state) => state.user);
+  const [activeModify, setActiveModify] = useState(false);
+  const [content, setContent] = useState(item.content);
 
-  const getDate = (currentDate) => {
-    const current = new Date(currentDate.toDate());
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-    const date = current.getDate();
-    return year + '. ' + month + '. ' + date
-  }
-
-  const onWrite = (id) => {
+  const onModify = () => {
+    handleUpdateComment(id, item.id, content);
+    setActiveModify(false)
     setContent('');
-    commentMutation.mutate({id, content});
   }
-  
+
+  const onDelete = () => {
+    Alert.alert("", "댓글을 삭제하시겠습니까?", [
+      {
+        text: "취소",
+        onPress: () => null,
+      },
+      {
+        text: "확인",
+        onPress: () => {
+          handleDeleteComment(id, item.id);
+        }
+      }
+    ]);
+  }
+
   return (
-    <View style={styles.container}>
-      <View style={styles.comment}>
+    <View style={styles.recomment}>
+      <View style={styles.topArea}>
         <View style={styles.avatar}>
           <Image style={styles.avatarImage} source={item.writer.photoURL ? {uri: item.writer.photoURL} : require('../assets/user.png')} />
         </View>
-        <View style={styles.contentWrap}>
-          <View style={styles.wrap}>
-            <Text style={styles.writer}>{item.writer.name}</Text>
-            <Text style={styles.date}>{getDate(item.created)}</Text>
-          </View>
-          {item.photoURL &&
-            <Pressable onPress={() => navigation.navigate('Photo', {url: item.photoURL})}>
-              <Image style={styles.image} source={{uri: item.photoURL}} />
+        <Text style={styles.name}>{item.writer.name}</Text>
+        <Text style={styles.date}>{getDate(item.created)}</Text>
+        {(item.writer.id === user.id && !item.isDeleted) &&
+          <View style={styles.btns}>
+            <Pressable style={styles.btn} onPress={() => setActiveModify(true)}>
+              <Icon name="create-outline" size={16} color='#666' />
             </Pressable>
-          }
-          <View style={styles.content}>
-            <Text style={styles.contentText}>{item.content}</Text>
+            <Pressable style={styles.btn} onPress={onDelete}>
+              <Icon name="trash-outline" size={16} color='#666' />
+            </Pressable>
           </View>
-        </View>
+        }
       </View>
-      {item.recomments.length > 0 &&
-        item.recomments.map((i) => (
-          <View key={i.created} style={[styles.comment, styles.recomment]}>
-            <View style={styles.avatar}>
-              <Image style={styles.avatarImage} source={i.writer.photoURL ? {uri: i.writer.photoURL} : require('../assets/user.png')} />
+      <View style={styles.contentArea}>
+        {activeModify
+          ?
+            <View style={styles.modify}>
+              <TextInput value={content} onChangeText={setContent} style={styles.input} onSubmitEditing={onModify} />
+              <Pressable style={styles.btnSubmit} onPress={onModify}>
+                <Icon name="checkmark-sharp" size={20} color='#333' />
+              </Pressable>
+              <Pressable style={styles.btnCancel} onPress={() => setActiveModify(false)}>
+                <Icon name="close" size={20} color='#333' />
+              </Pressable>
             </View>
-            <View style={styles.contentWrap}>
-              <View style={styles.wrap}>
-                <Text style={styles.writer}>{i.writer.name}</Text>
-                <Text style={styles.date}>{getDate(i.created)}</Text>
-              </View>
-              <Text style={styles.content}>{i.content}</Text>
-            </View>
-          </View>
-        ))
-      }
-      <View style={styles.write}>
-        <TextInput style={styles.writeInput} value={content} onChangeText={setContent} />
-        <Pressable style={styles.writeBtn} onPress={() => onWrite(item.id)}>
-          <Text style={styles.writeBtnText}>전송</Text>
-        </Pressable>
+          : <Text style={[styles.content, item.isDeleted && styles.deleted]}>{item.content}</Text>
+        }        
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    
-  },
-  comment: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  avatar: {
-    marginRight: 10,
-  },
-  avatarImage: {
-    width: 40,
-    height: 40,
-    resizeMode: 'cover',
-    borderRadius: 20,
-  },
-  contentWrap: {
+  recomment: {
+    marginTop: 15,
     padding: 15,
     backgroundColor: '#f6f6f6',
     borderRadius: 5,
   },
-  wrap: {
+  topArea: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    justifyContent: 'space-between',
   },
-  writer: {
-    marginRight: 10,
-    fontSize: 14,
+  avatar: {
+    marginRight: 7,
+  },
+  avatarImage: {
+    width: 26,
+    height: 26,
+    resizeMode: 'cover',
+    borderRadius: 13,
+  },
+  name: {
+    marginRight: 7,
+    fontSize: 16,
     color: '#222',
   },
   date: {
-    fontSize: 12,
+    marginRight: 'auto',
+    fontSize: 14,
     color: '#999',
   },
-  image: {
-    width: 200,
-    height: 200,
-    marginBottom: 10,
-  },
-  content: {
-    fontSize: 14,
-    color: '#454545',
-  },
-  write: {
+  btns: {
+    marginLeft: 'auto',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: 50,
-    marginTop: 15,
   },
-  writeInput: {
-    height: 40,
-    marginRight: 5,
-    paddingHorizontal: 10,
+  btn: {
+    marginLeft: 7,
+  },
+  contentArea: {
+    marginTop: 10,
+  },
+  contentText: {
+    fontSize: 16,
     color: '#222',
-    flexGrow: 1,
+  },
+  deleted: {
+    color: '#999',
+  },
+  modify: {
+    
+  },
+  input: {
+    paddingVertical: 10,
+    paddingLeft: 10,
+    paddingRight: 50,
+    fontSize: 15,
+    color: '#222',
     borderWidth: 1,
     borderColor: '#ededed',
+    backgroundColor: '#fff',
     borderRadius: 5,
   },
-  writeBtn: {
-    display: 'flex',
-    justifyContent: 'center',
-    height: 38,
-    paddingHorizontal: 10,
-    backgroundColor: '#ff4e50',
-    borderRadius: 5,
+  btnSubmit: {
+    position: 'absolute',
+    top: 8,
+    right: 35,
   },
-  writeBtnText: {
-    fontSize: 14,
-    color: '#fff',
-  },
-  recomment: {
-    paddingLeft: 50,
-    marginTop: 15,
-  },
+  btnCancel: {
+    position: 'absolute',
+    top: 8,
+    right: 10,
+  }
 });
 
-export default Comment;
+export default Recomment

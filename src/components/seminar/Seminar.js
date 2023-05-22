@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet, Image, Text } from 'react-native';
 
-function Seminar({item}) {
+function Seminar({seminar}) {
   const navigation = useNavigation();
   // const [currentDate, setCurrentDate] = useState('');
 
@@ -15,17 +15,17 @@ function Seminar({item}) {
   }, []);
 
   return (
-    <Pressable onPress={() => navigation.navigate('SeminarDetail', {id: item.id})} style={styles.block}>
-      {item._data.posterUrl &&
+    <Pressable onPress={() => navigation.navigate('SeminarDetail', {id: seminar.id})} style={styles.block}>
+      {seminar.posterUrl &&
         <Image
-          source={{uri: item._data.posterUrl}}
+          source={{uri: seminar.posterUrl}}
           style={styles.image}
           resizeMethod='resize'
           resizeMode='cover'
         />
       }
-      <Text style={styles.title}>{item._data.title}</Text>
-      <Text style={styles.host}>{item._data.host}</Text>
+      <Text style={styles.title}>{seminar.title}</Text>
+      <Text style={styles.host}>{seminar.host}</Text>
     </Pressable>
   )
 }

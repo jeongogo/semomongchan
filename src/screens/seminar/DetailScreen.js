@@ -19,13 +19,13 @@ function DetailScreen({route}) {
   }
 
   /** 리뷰 가져오기 */
-  const getComments = () => {
-    return getDocsByKey('comment', 'seminarId', route.params.id);
+  const getReviews = () => {
+    return getDocsByKey('review', 'seminarId', route.params.id);
   }
 
   /** Query */
   const seminarQuery = useQuery('seminarDetail', getSeminar);
-  const commentQuery = useQuery('seminarComments', getComments);
+  const reviewQuery = useQuery('seminarReviews', getReviews);
 
   /** 위시리스트 토글 */
   const handleWish = async () => {
@@ -73,6 +73,7 @@ function DetailScreen({route}) {
   /** 대댓글 달기 */
   const handleCommentWrite = async (comment) => {
     const data = {
+      id: new Date().getTime(),
       writer: {
         id: user.id,
         name: user.name,
@@ -82,10 +83,11 @@ function DetailScreen({route}) {
       content: comment.content,
       created: new Date(),
       likes: 0,
+      isDeleted: false,
     }
 
-    const currentComments = commentQuery.data.filter((i) => i.id === comment.id);
-    await updateDoc('comment', comment.id, {recomments: currentComments[0].recomments.concat(data)});
+    const currentReviews = reviewQuery.data.filter((i) => i.id === comment.id);
+    await updateDoc('review', comment.id, {comments: currentReviews[0].comments.concat(data)});
   }
 
   /** Mutation - 위시리스트 */
@@ -104,16 +106,67 @@ function DetailScreen({route}) {
       console.log(error);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries('seminarComments');
+      queryClient.invalidateQueries('seminarReviews');
     },
   });
-  
+
+  /** 리뷰 삭제 */
+  const handleDeleteReview = async (id) => {
+    try {
+      await updateDoc('review', id, {content: '작성자에 의해 삭제된 리뷰입니다.', isDeleted: true});
+      queryClient.invalidateQueries('seminarReviews');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /** 대댓글 수정 */
+  const handleUpdateComment = async (id, commentId, content) => {
+    try {
+      const currentReviews = reviewQuery.data.filter((i) => i.id === id);
+      const currentComments = currentReviews[0].comments.map((i) => {
+        if (i.id === commentId) {
+          return {
+            ...i,
+            content
+          }
+        }
+        return i;
+      });
+      await updateDoc('review', id, {comments: currentComments});
+      queryClient.invalidateQueries('seminarReviews');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /** 대댓글 삭제 */
+  const handleDeleteComment = async (id, commentId) => {
+    try {
+      const currentReviews = reviewQuery.data.filter((i) => i.id === id);
+      const currentComments = currentReviews[0].comments.map((i) => {
+        if (i.id === commentId) {
+          return {
+            ...i,
+            content: '작성자에 의해 삭제된 리뷰입니다.',
+            isDeleted: true,
+          }
+        }
+        return i;
+      });
+      await updateDoc('review', id, {comments: currentComments});
+      queryClient.invalidateQueries('seminarReviews');
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     const filterData = user.wishList.filter((i) => i.id === route.params.id);
     setWishToggle(filterData.length > 0 ? true : false);
   }, [user.wishList]);
 
-  if (!seminarQuery.data || !commentQuery.data) {
+  if (!seminarQuery.data || !reviewQuery.data) {
     return (
       <Loader />
     )
@@ -123,11 +176,14 @@ function DetailScreen({route}) {
     <Detail
       toastRef={toastRef}
       seminar={seminarQuery.data}
-      comments={commentQuery.data}
+      reviews={reviewQuery.data}
       wishToggle={wishToggle}
       setWishToggle={setWishToggle}
       wishMutation={wishMutation}
       commentMutation={commentMutation}
+      handleDeleteReview={handleDeleteReview}
+      handleUpdateComment={handleUpdateComment}
+      handleDeleteComment={handleDeleteComment}
     />
   )
 }

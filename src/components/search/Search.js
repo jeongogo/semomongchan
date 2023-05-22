@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
     backgroundColor: '#fff',
   },
   prev: {
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   search: {
     position: 'absolute',
     top: 8,
-    right: 25,
+    right: 15,
     zIndex: 2,
   }
 });

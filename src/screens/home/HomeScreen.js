@@ -1,53 +1,45 @@
 import React from 'react';
 import firestore from '@react-native-firebase/firestore';
-import { useInfiniteQuery } from 'react-query';
+import { useQuery, useInfiniteQuery } from 'react-query';
 import Home from '../../components/home/Home';
 import Loader from '../../components/common/Loader';
-import { Button} from 'react-native';
 
 function HomeScreen() {
-  const seminarQuery = useInfiniteQuery(
-    ["seminar"],
-    async ({queryKey, pageParam}) => {
-      return pageParam
-        ?
-          await firestore()
-          .collection("seminar")
-          .orderBy("created", "desc")
-          .startAfter(pageParam)
-          .limit(10)
-          .get()
-          .then((querySnapshot) => querySnapshot)
-        :
-          await firestore()
-          .collection("seminar")
-          .orderBy("created", "desc") 
-          .limit(10)
-          .get()
-          .then((querySnapshot) => querySnapshot)
-    }, 
-    {
-      getNextPageParam: (querySnapshot) => {
-        if (querySnapshot.size < 10) return null;
-        else return querySnapshot.docs[querySnapshot.docs.length - 1];
-      },
-    }
-  );
-
-  const onMore = () => {
-    if (seminarQuery.hasNextPage) {
-      seminarQuery.fetchNextPage();
-    } else {
-      console.log("no next page");
-    }
+  const getSeminars = async () => {
+    const snapshot = await firestore().collection('seminar').orderBy('created', 'desc').get();
+    let data = [];
+    snapshot.forEach(doc => {
+      const item = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      data.push(item);
+    });
+    return data;
   }
 
-  if (!seminarQuery.data) {
+  const getReviews = async () => {
+    const snapshot = await firestore().collection('review').orderBy('created', 'desc').get();
+    let data = [];
+    snapshot.forEach(doc => {
+      const item = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      data.push(item);
+    });
+    return data;
+  }
+
+  const seminarQuery = useQuery('newSeminars', getSeminars);
+  const reviewQuery = useQuery('newReviews', getReviews);
+
+  if (!seminarQuery.data || !reviewQuery.data) {
     return <Loader />
   }
 
   return (
-    <Home data={seminarQuery.data} onMore={onMore} />
+    <Home seminarData={seminarQuery.data} reviewData={reviewQuery.data} />
   );
 }
 

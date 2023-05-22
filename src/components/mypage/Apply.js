@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, Pressable } from 'react-native';
 
-function Notice({item}) {
+function Apply({item}) {
   const navigation = useNavigation();
   const [currentDate, setCurrentDate] = useState('');
 
@@ -15,7 +15,7 @@ function Notice({item}) {
   }, []);
 
   return (
-    <Pressable onPress={() => navigation.navigate('NoticeDetail', {id: item.id})} style={styles.block}>
+    <Pressable onPress={() => navigation.navigate('ApplyDetail', {id: item.id})} style={styles.block}>
       <Text style={styles.date}>{currentDate}</Text>
       <Text style={styles.title}>{item._data.title}</Text>
     </Pressable>
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Notice
+export default Apply

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
-import { StyleSheet, TextInput, View, Keyboard, Pressable, Text, Image } from 'react-native';
 import useStore from '../../store/store';
+import { StyleSheet, TextInput, View, Keyboard, Pressable, Text, Image } from 'react-native';
+import Loader from '../common/Loader';
 
-function Comment({handleSubmitComment}) {
+function ReviewWrite({isLoading, handleWriteReview}) {
   const route = useRoute();
   const [content, setContent] = useState('');
   const [response, setResponse] = useState(null);
@@ -56,13 +57,14 @@ function Comment({handleSubmitComment}) {
           photoURL: user.photoURL,
         },
         content,
-        recomments: [],
+        comments: [],
         created: new Date(),
         likes: 0,
         photoURL,
+        isDeleted: false,
       }
 
-      handleSubmitComment(data);
+      handleWriteReview(data);
     } catch (e) {
       console.log(e);
     }
@@ -88,9 +90,14 @@ function Comment({handleSubmitComment}) {
             <Text style={styles.addPhotoText}>사진 추가하기</Text>
           </Pressable>
       }
-      <Pressable onPress={onSubmit} style={styles.btn}>
-        <Text style={styles.btnText}>전송</Text>
-      </Pressable>
+      {isLoading
+        ?
+          <Loader />
+        :
+          <Pressable onPress={onSubmit} style={styles.btn}>
+            <Text style={styles.btnText}>작성하기</Text>
+          </Pressable>
+      }
     </View>
   )
 }
@@ -137,9 +144,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   btnText: {
+    fontSize: 15,
+    fontWeight: 500,
     color: 'white',
     textAlign: 'center',
   }
 })
 
-export default Comment;
+export default ReviewWrite;
