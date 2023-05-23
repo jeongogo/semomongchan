@@ -21,7 +21,7 @@ function Home({}) {
         <View style={styles.avatar}>
           <Image
             style={styles.circle}
-            source={user.photoURL ? {uri: user.photoURL} : require('../assets/user.png')}
+            source={user.photoURL ? {uri: user.photoURL} : require('../../assets/user.png')}
           />
         </View>
         <Text style={styles.name}>{user.name}</Text>

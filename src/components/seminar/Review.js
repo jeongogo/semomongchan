@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TextInput, View, Pressable, Alert } from 'react-native';
 import useStore from '../../store/store';
@@ -9,14 +10,6 @@ function Review({item, commentMutation, handleDeleteReview, handleUpdateComment,
   const navigation = useNavigation();
   const [content, setContent] = useState('');
   const user = useStore((state) => state.user);
-
-  const getDate = (currentDate) => {
-    const current = new Date(currentDate.toDate());
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-    const date = current.getDate();
-    return year + '.' + month + '.' + date
-  }
 
   const onWrite = () => {
     setContent('');
@@ -43,10 +36,10 @@ function Review({item, commentMutation, handleDeleteReview, handleUpdateComment,
       <View style={styles.contentWrap}>
         <View style={styles.topArea}>
           <View style={styles.avatar}>
-            <Image style={styles.avatarImage} source={item.writer.photoURL ? {uri: item.writer.photoURL} : require('../assets/user.png')} />
+            <Image style={styles.avatarImage} source={item.writer.photoURL ? {uri: item.writer.photoURL} : require('../../assets/user.png')} />
           </View>
           <Text style={styles.name}>{item.writer.name}</Text>
-          <Text style={styles.date}>{getDate(item.created)}</Text>
+          <Text style={styles.date}>{format(new Date(item.created.toDate()), 'yyyy.MM.dd')}</Text>
           {/* {(item.writer.id === user.id && !item.isDeleted) &&
             <View style={styles.btns}>
               <Pressable style={styles.btn} onPress={() => {}}>
@@ -74,7 +67,6 @@ function Review({item, commentMutation, handleDeleteReview, handleUpdateComment,
               id={item.id}
               key={i.created}
               item={i}
-              getDate={getDate}
               handleUpdateComment={handleUpdateComment}
               handleDeleteComment={handleDeleteComment}
             />

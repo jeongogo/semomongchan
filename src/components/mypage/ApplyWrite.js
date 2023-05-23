@@ -145,7 +145,7 @@ function ApplyWrite() {
               <Pressable onPress={onSelectImage}>
                 <Image
                   style={styles.thumb}
-                  source={require('../assets/thumb.png')}
+                  source={require('../../assets/thumb.png')}
                 />
               </Pressable>
               {photoURL.length > 0 &&

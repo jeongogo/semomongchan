@@ -1,20 +1,13 @@
 import React from 'react';
+import { format } from 'date-fns';
 import { StyleSheet, View, Text } from 'react-native';
 
 function Review({review}) {
-  const getDate = (currentDate) => {
-    const current = new Date(currentDate.toDate());
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-    const date = current.getDate();
-    return year + '.' + month + '.' + date
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.name}>{review.writer.name}</Text>
-        <Text style={styles.date}>{getDate(review.created)}</Text>
+        <Text style={styles.date}>{format(new Date(review.created.toDate()), 'yyyy.MM.dd')}</Text>
       </View>
       <Text style={styles.content}>{review.content}</Text>
     </View>

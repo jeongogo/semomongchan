@@ -1,22 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
+import { format } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, Pressable } from 'react-native';
 
 function Apply({item}) {
   const navigation = useNavigation();
-  const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    const current = new Date(item._data.created.toDate());
-    const year = current.getFullYear();
-    const month = current.getMonth() + 1;
-    const date = current.getDate();
-    setCurrentDate(year + '년 ' + month + '월 ' + date + '일');
-  }, []);
 
   return (
     <Pressable onPress={() => navigation.navigate('ApplyDetail', {id: item.id})} style={styles.block}>
-      <Text style={styles.date}>{currentDate}</Text>
+      <Text style={styles.date}>{format(new Date(item._data.created.toDate()), 'yyyy.MM.dd')}</Text>
       <Text style={styles.title}>{item._data.title}</Text>
     </Pressable>
   )

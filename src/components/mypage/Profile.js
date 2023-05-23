@@ -83,7 +83,7 @@ function Profile() {
         <Pressable onPress={onSelectImage}>
           <Image
             style={styles.circle}
-            source={response ? {uri: response?.assets[0]?.uri} : user.photoURL ? {uri: user.photoURL} : require('../assets/user.png')}
+            source={response ? {uri: response?.assets[0]?.uri} : user.photoURL ? {uri: user.photoURL} : require('../../assets/user.png')}
           />
         </Pressable>
       </View>

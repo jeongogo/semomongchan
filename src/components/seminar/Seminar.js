@@ -1,18 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet, Image, Text } from 'react-native';
 
 function Seminar({seminar}) {
   const navigation = useNavigation();
-  // const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    // const current = new Date(item.date.toDate());
-    // const year = current.getFullYear();
-    // const month = current.getMonth() + 1;
-    // const date = current.getDate();
-    // setCurrentDate(year + '년 ' + month + '월 ' + date + '일');
-  }, []);
 
   return (
     <Pressable onPress={() => navigation.navigate('SeminarDetail', {id: seminar.id})} style={styles.block}>

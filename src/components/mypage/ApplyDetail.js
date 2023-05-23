@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { format } from 'date-fns';
 import { SafeAreaView, ScrollView, Image, useWindowDimensions } from 'react-native';
 import { Text, View, StyleSheet } from 'react-native';
 import Loader from '../common/Loader';
 
 function Detail({isLoading, apply}) {
   const { width } = useWindowDimensions();
-  const [currentDate, setCurrentDate] = useState('');
-
-  useEffect(() => {
-    if (apply && !isLoading) {
-      const current = new Date(apply.created.toDate());
-      const year = current.getFullYear();
-      const month = current.getMonth() + 1;
-      const date = current.getDate();
-      setCurrentDate(year + '년 ' + month + '월 ' + date + '일');
-    }
-  }, [isLoading]);
   
   return (
     <SafeAreaView style={styles.container}>
@@ -23,7 +13,7 @@ function Detail({isLoading, apply}) {
         {isLoading && <Loader />}
         <View style={styles.topInfo}>
           <Text style={styles.title}>{apply.title}</Text>
-          <Text style={styles.date}>{currentDate}</Text>
+          <Text style={styles.date}>{(apply && !isLoading) && format(new Date(apply.created.toDate()), 'yyyy.MM.dd')}</Text>
         </View>
         <View style={styles.content}>
           <Text style={styles.text}>주최: {apply.host}</Text>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
 import { Image, StyleSheet, Text, TextInput, View, Pressable, Alert } from 'react-native';
 import useStore from '../../store/store';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-function Recomment({id, item, getDate, handleUpdateComment, handleDeleteComment}) {
+function Recomment({id, item, handleUpdateComment, handleDeleteComment}) {
   const user = useStore((state) => state.user);
   const [activeModify, setActiveModify] = useState(false);
   const [content, setContent] = useState(item.content);
@@ -33,10 +34,10 @@ function Recomment({id, item, getDate, handleUpdateComment, handleDeleteComment}
     <View style={styles.recomment}>
       <View style={styles.topArea}>
         <View style={styles.avatar}>
-          <Image style={styles.avatarImage} source={item.writer.photoURL ? {uri: item.writer.photoURL} : require('../assets/user.png')} />
+          <Image style={styles.avatarImage} source={item.writer.photoURL ? {uri: item.writer.photoURL} : require('../../assets/user.png')} />
         </View>
         <Text style={styles.name}>{item.writer.name}</Text>
-        <Text style={styles.date}>{getDate(item.created)}</Text>
+        <Text style={styles.date}>{format(new Date(item.created.toDate()), 'yyyy.MM.dd')}</Text>
         {(item.writer.id === user.id && !item.isDeleted) &&
           <View style={styles.btns}>
             <Pressable style={styles.btn} onPress={() => setActiveModify(true)}>

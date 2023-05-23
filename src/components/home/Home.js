@@ -8,11 +8,17 @@ import Review from './Review';
 
 function Home({seminarData, reviewData}) {
   const [active, setActive] = useState('all');
+  const [slideTime, setSlideTime] = useState(1);
 
   const onTab = (tab) => {
     console.log('tab');
     setActive(tab);
   }
+
+  useEffect(() => {
+    const autoTimer = setTimeout(() => setSlideTime(8), 2000);
+    return () => clearTimeout(autoTimer);
+  }, [])
 
   return (
     <SafeAreaProvider style={styles.container}>
@@ -45,7 +51,7 @@ function Home({seminarData, reviewData}) {
             <Text style={styles.title}>최신 리뷰</Text>
           </View>
           <View style={styles.reviewList}>
-            <Swiper style={styles.swiper} key={reviewData.length} autoplay={true} showsPagination	={false}>
+            <Swiper style={styles.swiper} key={reviewData.length} autoplay={true} showsPagination	={false} autoplayTimeout={slideTime}>
               {reviewData.length && reviewData.map((review) => (
                 <Review key={review.id} review={review} />
               ))}

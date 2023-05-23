@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import uuid from 'react-native-uuid';
 import { getDoc, getDocsByKey, updateDoc } from '../../lib/doc';
 import { updateUser } from '../../lib/user';
 import useStore from '../../store/store';
@@ -73,7 +74,7 @@ function DetailScreen({route}) {
   /** 대댓글 달기 */
   const handleCommentWrite = async (comment) => {
     const data = {
-      id: new Date().getTime(),
+      id: uuid.v4(),
       writer: {
         id: user.id,
         name: user.name,
