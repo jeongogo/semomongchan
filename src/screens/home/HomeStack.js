@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Pressable } from 'react-native';
 import HomeScreen from './HomeScreen';
 import SearchScreen from '../search/SearchScreen';
+import SeminarListScreen from '../seminar/HomeScreen';
 import SeminarDetailScreen from '../seminar/DetailScreen';
 import SeminarReviewWriteScreen from '../seminar/ReviewWriteScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -21,6 +22,13 @@ function HomeStack({navigation}) {
         name='Search'
         component={SearchScreen}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name='SeminarList'
+        component={SeminarListScreen}
+        options={{
+          title: '세미나 전체보기'
+        }}
       />
       <Stack.Screen
         name='SeminarDetail'

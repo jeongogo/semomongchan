@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View, Text, Pressable, ScrollView } from 'react-native';
 import Swiper from 'react-native-swiper'
 import Search from '../search/Search';
 import Seminar from '../seminar/Seminar';
 import Review from './Review';
+import Notice from './Notice';
 
-function Home({seminarData, reviewData}) {
+function Home({seminarData, noticeData, reviewData}) {
+  const navigation = useNavigation();
   const [active, setActive] = useState('all');
   const [slideTime, setSlideTime] = useState(1);
 
@@ -39,8 +42,27 @@ function Home({seminarData, reviewData}) {
             </Pressable>
           </View> */}
           <Search home />
+          <View style={styles.noticeList}>
+            <Swiper
+              style={styles.swiper}
+              key={noticeData.length}
+              autoplay={true}
+              showsPagination	={true}
+              autoplayTimeout={slideTime}
+              dotColor='#eee'
+              activeDotColor='#ff4e50'
+              paginationStyle={{bottom: 15}}
+            >
+              {noticeData.length && noticeData.map((notice) => (
+                <Notice key={notice.id} notice={notice} />
+              ))}
+            </Swiper>
+          </View>
           <View style={styles.wrap}>
             <Text style={styles.title}>최신 세미나</Text>
+            <Pressable onPress={() => navigation.navigate('SeminarList')}>
+              <Text>전체보기</Text>
+            </Pressable>
           </View>
           <View style={styles.seminarlist}>
             {seminarData.length && seminarData.map((seminar) => (
@@ -51,7 +73,13 @@ function Home({seminarData, reviewData}) {
             <Text style={styles.title}>최신 리뷰</Text>
           </View>
           <View style={styles.reviewList}>
-            <Swiper style={styles.swiper} key={reviewData.length} autoplay={true} showsPagination	={false} autoplayTimeout={slideTime}>
+            <Swiper
+              style={styles.swiper}
+              key={reviewData.length}
+              autoplay={true}
+              showsPagination	={false}
+              autoplayTimeout={slideTime}
+            >
               {reviewData.length && reviewData.map((review) => (
                 <Review key={review.id} review={review} />
               ))}
@@ -70,7 +98,6 @@ const styles = StyleSheet.create({
   },
   contentWrap: {
     paddingTop: 20,
-    paddingHorizontal: 15,
   },
   tabWrap: {
     display: 'flex',
@@ -95,6 +122,11 @@ const styles = StyleSheet.create({
   },
   wrap: {
     marginTop: 20,
+    paddingHorizontal: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     marginBottom: 10,
@@ -102,14 +134,20 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     color: '#222',
   },
+  noticeList: {
+    marginTop: 15,
+    height: 150,
+  },
   seminarlist: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    paddingHorizontal: 15,
   },
   reviewList: {
     paddingBottom: 40,
+    paddingHorizontal: 15,
   },
   swiper: {
     height: 100,

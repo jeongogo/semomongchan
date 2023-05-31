@@ -6,7 +6,20 @@ import Loader from '../../components/common/Loader';
 
 function HomeScreen() {
   const getSeminars = async () => {
-    const snapshot = await firestore().collection('seminar').orderBy('created', 'desc').get();
+    const snapshot = await firestore().collection('seminar').orderBy('created', 'desc').limit(10).get();
+    let data = [];
+    snapshot.forEach(doc => {
+      const item = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      data.push(item);
+    });
+    return data;
+  }
+
+  const getNoticeMain = async () => {
+    const snapshot = await firestore().collection('notice').where('isShowMain', '==', true).orderBy('created', 'desc').get();
     let data = [];
     snapshot.forEach(doc => {
       const item = {
@@ -32,14 +45,15 @@ function HomeScreen() {
   }
 
   const seminarQuery = useQuery('newSeminars', getSeminars);
+  const noticeQuery = useQuery('newNotice', getNoticeMain);
   const reviewQuery = useQuery('newReviews', getReviews);
 
-  if (!seminarQuery.data || !reviewQuery.data) {
+  if (!seminarQuery.data || !reviewQuery.data || !noticeQuery.data) {
     return <Loader />
   }
 
   return (
-    <Home seminarData={seminarQuery.data} reviewData={reviewQuery.data} />
+    <Home seminarData={seminarQuery.data} noticeData={noticeQuery.data} reviewData={reviewQuery.data} />
   );
 }
 
