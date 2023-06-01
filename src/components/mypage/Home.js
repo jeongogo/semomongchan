@@ -48,7 +48,6 @@ function Home({}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
     backgroundColor: '#fff',
   },
   profile: {
@@ -57,14 +56,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-    paddingBottom: 20,
+    paddingVertical: 25,
     borderBottomWidth: 1,
     borderBottomColor: '#ededed',
   },
   avatar: {
-    marginRight: 10,
+    marginRight: 15,
     width: 60,
     height: 60,
+    backgroundColor: '#eee',
     borderRadius: 30,
     overflow: 'hidden',
   },
@@ -79,27 +79,29 @@ const styles = StyleSheet.create({
   name: {
     marginRight: 'auto',
     fontSize: 15,
+    fontWeight: 500,
     color: '#222',
   },
   menuWrap: {
-    paddingVertical: 10,
+    paddingVertical: 5,
   },
   menu: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: 20,
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ededed',
   },
   menuText: {
     fontSize: 15,
+    fontWeight: 500,
     color: '#222',
   },
   logout: {
-    marginTop: 10,
+    marginTop: 20,
     paddingHorizontal: 15,
   },
   logoutText: {

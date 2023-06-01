@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { View, StyleSheet, Text } from 'react-native';
-import BorderedInput from '../common/BorderedInput';
+import BorderedInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 
 function FindPassword({handleResetPassword}) {

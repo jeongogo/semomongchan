@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { getDocsBySearch } from '../../lib/doc';
-import Result from '../../components/search/Result';
+import SearchResult from '../../components/seminar/SearchResult';
 
 function SearchScreen({route}) {
-  const [seminarList, setSeminarList] = useState([]);
+  const [data, setData] = useState([]);
 
   const handleSearch = (text) => {
-    getDocsBySearch('seminar', 'keyword', text).then(setSeminarList);
+    getDocsBySearch('seminar', 'keyword', text).then(setData);
   }
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function SearchScreen({route}) {
   }, []);
 
   return (
-    <Result seminarList={seminarList} handleSearch={handleSearch} />
+    <SearchResult data={data} handleSearch={handleSearch} />
   );
 }
 

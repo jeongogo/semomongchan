@@ -64,7 +64,7 @@ function SignInScreen({route, navigation}) {
       behavior={Platform.select({ios: 'padding'})}
     >
       <SafeAreaView style={styles.fullscreen}>
-        <Text style={styles.text}>세미나유</Text>
+        <Text style={styles.title}>환영합니다.</Text>
         <View style={styles.form}>
           <SignInForm
             isSignUp={isSignUp}
@@ -93,9 +93,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
+  title: {
     fontSize: 32,
     fontWeight: 'bold',
+    color: '#222',
   },
   form: {
     marginTop: 34,

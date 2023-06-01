@@ -2,14 +2,14 @@ import React from 'react';
 import { format } from 'date-fns';
 import { StyleSheet, View, Text } from 'react-native';
 
-function Review({review}) {
+function Review({item}) {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.name}>{review.writer.name}</Text>
-        <Text style={styles.date}>{format(new Date(review.created.toDate()), 'yyyy.MM.dd')}</Text>
+        <Text style={styles.name}>{item.writer.name}</Text>
+        <Text style={styles.date}>{format(new Date(item.created.toDate()), 'yyyy.MM.dd')}</Text>
       </View>
-      <Text style={styles.content}>{review.content}</Text>
+      <Text style={styles.content}>{item.content}</Text>
     </View>
   )
 }
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 10,
+    borderRadius: 3,
   },
   top: {
     display: 'flex',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     color: '#222',
   },
   date: {
-    fontSize: 15,
+    fontSize: 13,
     color: '#999',
   },
   content: {

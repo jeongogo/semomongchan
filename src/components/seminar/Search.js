@@ -4,7 +4,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { Text, View, StyleSheet, TextInput, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function Search({home, handleSearch}) {
+function Search({handleSearch}) {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const route = useRoute();
@@ -18,29 +18,25 @@ function Search({home, handleSearch}) {
     if (keyword === '') {
       return;
     }
-    if (home) {
-      navigation.navigate('Search', {keyword});
-      return;
+    if (route.params?.keyword) {
+      handleSearch(keyword);
+    } else {
+      navigation.navigate('SearchResult', {keyword});
     }
-    handleSearch(keyword);
   }
 
   useEffect(() => {
-    if (home) {
-      setKeyword('');
-    } else {
-      setKeyword(route.params.keyword);
-    }
+    setKeyword(route.params?.keyword);
   }, [isFocused]);
   
   return (
     <View style={styles.container}>
-      {!home &&
+      {route.params?.keyword &&
         <Pressable style={styles.prev} onPress={onPrev}>
           <Icon name="navigate-before" size={28} color='#666' />
         </Pressable>
       }
-      <TextInput style={styles.input} value={keyword} onChangeText={setKeyword} />
+      <TextInput style={styles.input} value={keyword} onChangeText={setKeyword} onSubmitEditing={onSearch} />
       <Pressable style={styles.search} onPress={onSearch}>
         <Icon name="search" size={24} color='#666' />
       </Pressable>
@@ -61,17 +57,18 @@ const styles = StyleSheet.create({
     
   },
   input: {
-    height: 40,
-    paddingLeft: 15,
+    height: 42,
+    paddingLeft: 20,
     paddingRight: 40,
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 20,
+    borderColor: '#ededed',
+    backgroundColor: '#fafafa',
+    borderRadius: 3,
     flexGrow: 1,
   },
   search: {
     position: 'absolute',
-    top: 8,
+    top: 10,
     right: 30,
     zIndex: 2,
   }

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList, StyleSheet, View } from 'react-native';
-import SeminarForList from './SeminarForList';
+import Seminar from "./Seminar";
+import Search from "./Search";
 
 function Home({data, onMore}) {
   const [list, setList] = useState([]);
@@ -16,7 +17,8 @@ function Home({data, onMore}) {
 
   return (
     <SafeAreaProvider style={styles.container}>
-      <SafeAreaView>
+      <SafeAreaView style={styles.contentWrap}>
+        <Search />
         <View style={styles.list}>
           <FlatList
             data={list}
@@ -33,7 +35,7 @@ function Home({data, onMore}) {
 }
 
 const renderItem = ({item}) => (
-  <SeminarForList item={item} />
+  <Seminar item={item} />
 )
 
 const styles = StyleSheet.create({
@@ -41,8 +43,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  contentWrap: {
+    paddingVertical: 20,
+  },
   list: {
-    marginTop: 5,
+    marginTop: 20,
     paddingHorizontal: 15,
   }
 })

@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 
-function Review({notice}) {
+function Notice({item}) {
   return (
-    <Image style={styles.image} source={{uri: notice.posterUrl}} />
+    <Image style={styles.image} source={{uri: item.posterUrl}} />
   )
 }
 
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Review
+export default Notice

@@ -29,7 +29,6 @@ function SignButtons({isSignUp, onSubmit, loading}) {
     <View style={styles.buttons}>
       <CustomButton
         title={primaryTitle}
-        hasMarginBottom
         onPress={onSubmit}
       />
       <CustomButton
@@ -46,13 +45,13 @@ function SignButtons({isSignUp, onSubmit, loading}) {
 
 const styles = StyleSheet.create({
   spinnerWrapper: {
-    marginTop: 32,
+    marginTop: 24,
     height: 104,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttons: {
-    marginTop: 32,
+    marginTop: 24,
   },
   find: {
     marginTop: 16,

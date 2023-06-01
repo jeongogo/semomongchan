@@ -22,6 +22,7 @@ const renderItem = ({item}) => (
 
 const styles = StyleSheet.create({
   container: {
+    paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: '#fff',
   },

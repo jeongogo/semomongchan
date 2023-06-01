@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import BorderedInput from '../common/BorderedInput'
+import CustomInput from '../common/CustomInput'
 
 function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
   const passwordRef = useRef();
@@ -7,7 +7,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
 
   return (
     <>
-      <BorderedInput
+      <CustomInput
         hasMarginBottom
         placeholder='이메일'
         value={form.email}
@@ -19,7 +19,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
         returnKeyType='next'
         onSubmitEditing={() => passwordRef.current.focus()}
       />
-      <BorderedInput
+      <CustomInput
         hasMarginBottom={isSignUp}
         placeholder='비밀번호'
         value={form.password}
@@ -36,7 +36,7 @@ function SignInForm({isSignUp, onSubmit, form, createChangeTextHandler}) {
         }}
       />
       {isSignUp && (
-        <BorderedInput
+        <CustomInput
           placeholder='비밀번호 확인'
           value={form.confirmPassword}
           onChangeText={createChangeTextHandler('confirmPassword')}

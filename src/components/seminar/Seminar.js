@@ -2,29 +2,30 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, StyleSheet, Image, Text } from 'react-native';
 
-function Seminar({seminar}) {
+function Seminar({item, home}) {
   const navigation = useNavigation();
 
   return (
-    <Pressable onPress={() => navigation.navigate('SeminarDetail', {id: seminar.id})} style={styles.block}>
-      {seminar.posterUrl &&
-        <Image
-          source={{uri: seminar.posterUrl}}
-          style={styles.image}
-          resizeMethod='resize'
-          resizeMode='cover'
-        />
-      }
-      <Text style={styles.title}>{seminar.title}</Text>
-      <Text style={styles.host}>{seminar.host}</Text>
+    <Pressable
+      onPress={() => {
+        navigation.navigate('SeminarDetail', {id: item.id})
+      }}
+      style={styles.block}
+    >
+      <Image
+        source={{uri: home ? item.posterUrl : item._data.posterUrl}}
+        style={styles.image}
+        resizeMethod='resize'
+        resizeMode='cover'
+      />
+      <Text style={styles.title}>{home ? item.title : item._data.title}</Text>
+      <Text style={styles.host}>{home ? item.host : item._data.host}</Text>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
   block: {
-    // paddingTop: 16,
-    // paddingBottom: 16,
     width: '48%',
     marginBottom: 15,
     overflow: 'hidden',
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#bdbdbd',
     width: '100%',
     aspectRatio: 1.2,
-    borderRadius: 5,
+    borderRadius: 3,
   },
   title: {
     marginTop: 10,

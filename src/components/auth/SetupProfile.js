@@ -6,7 +6,7 @@ import useStore from '../../store/store';
 import { ActivityIndicator, View,  StyleSheet, Platform, Pressable, Image} from 'react-native';
 import { createUser } from '../../lib/user';
 import { signOut } from '../../lib/auth';
-import BorderedInput from '../common/BorderedInput';
+import BorderedInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 
 function SetupProfile() {

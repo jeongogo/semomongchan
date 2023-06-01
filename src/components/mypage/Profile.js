@@ -5,7 +5,7 @@ import useStore from '../../store/store';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { updateUser } from '../../lib/user';
 import { StyleSheet, Text, View, Pressable, Image, ActivityIndicator } from 'react-native';
-import BorderedInput from '../common/BorderedInput';
+import BorderedInput from '../common/CustomInput';
 import CustomButton from '../common/CustomButton';
 
 function Profile() {
