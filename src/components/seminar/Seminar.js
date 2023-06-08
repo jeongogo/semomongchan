@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#bdbdbd',
     width: '100%',
     aspectRatio: 1.2,
-    borderRadius: 3,
+    borderRadius: 10,
   },
   title: {
     marginTop: 10,

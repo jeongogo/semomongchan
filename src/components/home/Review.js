@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 3,
+    borderRadius: 10,
   },
   top: {
     display: 'flex',

@@ -5,7 +5,7 @@ import Detail from '../../components/notice/Detail';
 function DetailScreen({route}) {
   const [notice, setNotice] = useState('');
 
-  const getChallenge = async () => {
+  const getNotice = async () => {
     try {
       const res = await firestore().collection('notice').doc(route.params.id).get();
       setNotice(res.data());
@@ -15,7 +15,7 @@ function DetailScreen({route}) {
   }
 
   useEffect(() => {
-    getChallenge();
+    getNotice();
   }, []);
 
   return (

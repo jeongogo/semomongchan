@@ -44,16 +44,30 @@ function HomeScreen() {
     return data;
   }
 
+  const getBannerMain = async () => {
+    const snapshot = await firestore().collection('banner').where('isShowMain', '==', true).orderBy('created', 'desc').get();
+    let data = [];
+    snapshot.forEach(doc => {
+      const item = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      data.push(item);
+    });
+    return data;
+  }
+
   const seminarQuery = useQuery('newSeminars', getSeminars);
   const noticeQuery = useQuery('newNotice', getNoticeMain);
   const reviewQuery = useQuery('newReviews', getReviews);
+  const bannerQuery = useQuery('newBanners', getBannerMain);
 
-  if (!seminarQuery.data || !reviewQuery.data || !noticeQuery.data) {
+  if (!seminarQuery.data || !reviewQuery.data || !noticeQuery.data || !bannerQuery.data) {
     return <Loader />
   }
 
   return (
-    <Home seminarData={seminarQuery.data} noticeData={noticeQuery.data} reviewData={reviewQuery.data} />
+    <Home seminarData={seminarQuery.data} noticeData={noticeQuery.data} reviewData={reviewQuery.data} bannerData={bannerQuery.data} />
   );
 }
 

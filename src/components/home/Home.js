@@ -5,8 +5,9 @@ import Swiper from 'react-native-swiper'
 import Seminar from '../seminar/Seminar';
 import Review from './Review';
 import Notice from './Notice';
+import Banner from './Banner';
 
-function Home({seminarData, noticeData, reviewData}) {
+function Home({seminarData, noticeData, reviewData, bannerData}) {
   const [slideTime, setSlideTime] = useState(1);
 
   useEffect(() => {
@@ -18,6 +19,9 @@ function Home({seminarData, noticeData, reviewData}) {
     <SafeAreaProvider style={styles.container}>
       <SafeAreaView>
         <ScrollView style={styles.contentWrap}>
+          <View style={styles.wrap}>
+            <Text style={styles.logo}>SEMINAR.U</Text>
+          </View>
           <View style={styles.noticeList}>
             <Swiper
               style={styles.swiper}
@@ -58,6 +62,23 @@ function Home({seminarData, noticeData, reviewData}) {
               </Swiper>
             </View>
           </View>
+          {bannerData.length > 0 &&
+            <View style={styles.wrap}>
+              <View style={styles.bannerList}>
+                <Swiper
+                  style={styles.swiper}
+                  key={bannerData.length}
+                  autoplay={true}
+                  showsPagination	={false}
+                  autoplayTimeout={slideTime}
+                >
+                  {bannerData.length && bannerData.map((item) => (
+                    <Banner key={item.id} item={item} />
+                  ))}
+                </Swiper>
+              </View>
+            </View>
+          }
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -76,6 +97,13 @@ const styles = StyleSheet.create({
     marginTop: 24,
     paddingHorizontal: 15,
   },
+  logo: {
+    marginBottom: 15,
+    fontSize: 24,
+    fontWeight: 700,
+    color: '#222',
+    textAlign: 'center',
+  },
   title: {
     marginBottom: 10,
     fontSize: 20,
@@ -93,7 +121,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   reviewList: {
-    height: 140,
+    height: 100,
+  },
+  bannerList: {
+    height: 120,
   },
 })
 
